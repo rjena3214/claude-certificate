@@ -1,0 +1,585 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Ranjan Kumar Jena — Anthropic Certified</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Mono:wght@300;400;500&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --bg:        #0A0E17;
+      --surface:   #0F1520;
+      --border:    #1A2235;
+      --olive:     #7A8C5A;
+      --olive-lt:  #9EAF74;
+      --olive-glow:#7A8C5A30;
+      --gold:      #C9A84C;
+      --gold-lt:   #E8C96A;
+      --text:      #E4E8F0;
+      --muted:     #4A5568;
+      --faint:     #1E2A3A;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'DM Sans', sans-serif;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* ── NOISE OVERLAY ── */
+    body::before {
+      content:'';
+      position:fixed;inset:0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+      pointer-events:none;z-index:0;opacity:0.4;
+    }
+
+    /* ── GRID BG ── */
+    body::after {
+      content:'';
+      position:fixed;inset:0;
+      background-image:
+        linear-gradient(var(--faint) 1px, transparent 1px),
+        linear-gradient(90deg, var(--faint) 1px, transparent 1px);
+      background-size: 60px 60px;
+      pointer-events:none;z-index:0;opacity:0.5;
+    }
+
+    .wrap { position:relative; z-index:1; max-width:900px; margin:0 auto; padding:0 24px; }
+
+    /* ── NAV ── */
+    nav {
+      position:fixed;top:0;left:0;right:0;z-index:100;
+      border-bottom:1px solid var(--border);
+      backdrop-filter:blur(20px);
+      background:rgba(10,14,23,0.85);
+    }
+    nav .wrap {
+      display:flex;align-items:center;justify-content:space-between;
+      padding-top:16px;padding-bottom:16px;
+    }
+    .nav-logo {
+      font-family:'DM Mono',monospace;
+      font-size:13px;color:var(--olive-lt);letter-spacing:0.1em;
+    }
+    .nav-links { display:flex;gap:28px; }
+    .nav-links a {
+      font-size:13px;color:var(--muted);text-decoration:none;
+      letter-spacing:0.04em;transition:color 0.2s;
+    }
+    .nav-links a:hover { color:var(--text); }
+
+    /* ── HERO ── */
+    .hero {
+      padding:160px 0 80px;
+      text-align:center;
+    }
+
+    .hero-badge {
+      display:inline-flex;align-items:center;gap:8px;
+      border:1px solid var(--olive);
+      background:var(--olive-glow);
+      border-radius:100px;
+      padding:6px 16px;
+      font-family:'DM Mono',monospace;
+      font-size:11px;color:var(--olive-lt);
+      letter-spacing:0.12em;
+      margin-bottom:32px;
+      animation:fadeDown 0.6s ease both;
+    }
+    .hero-badge span { width:6px;height:6px;border-radius:50%;background:var(--olive-lt);display:inline-block;animation:pulse 2s infinite; }
+
+    .hero-title {
+      font-family:'Playfair Display',serif;
+      font-size:clamp(42px,8vw,80px);
+      font-weight:900;
+      line-height:1.05;
+      letter-spacing:-0.03em;
+      animation:fadeUp 0.7s 0.1s ease both;
+    }
+    .hero-title em {
+      font-style:normal;
+      background:linear-gradient(135deg, var(--gold), var(--olive-lt));
+      -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+    }
+
+    .hero-sub {
+      margin-top:20px;
+      font-size:17px;color:var(--muted);line-height:1.7;
+      max-width:520px;margin-left:auto;margin-right:auto;
+      animation:fadeUp 0.7s 0.2s ease both;
+    }
+
+    .hero-actions {
+      margin-top:36px;display:flex;gap:12px;justify-content:center;flex-wrap:wrap;
+      animation:fadeUp 0.7s 0.3s ease both;
+    }
+    .btn-primary {
+      padding:12px 28px;border-radius:8px;
+      background:linear-gradient(135deg, var(--olive), var(--gold));
+      color:#0A0E17;font-weight:700;font-size:14px;
+      border:none;cursor:pointer;text-decoration:none;
+      transition:transform 0.2s, box-shadow 0.2s;
+      display:inline-flex;align-items:center;gap:8px;
+      letter-spacing:0.02em;
+    }
+    .btn-primary:hover { transform:translateY(-2px);box-shadow:0 8px 24px var(--olive-glow); }
+    .btn-ghost {
+      padding:12px 28px;border-radius:8px;
+      border:1px solid var(--border);background:transparent;
+      color:var(--text);font-size:14px;cursor:pointer;
+      text-decoration:none;transition:border-color 0.2s,color 0.2s;
+      display:inline-flex;align-items:center;gap:8px;
+    }
+    .btn-ghost:hover { border-color:var(--olive);color:var(--olive-lt); }
+
+    /* ── CERTIFICATE CARD ── */
+    .cert-section { padding:40px 0 80px; }
+
+    .cert-card {
+      position:relative;
+      background:var(--surface);
+      border:1px solid var(--border);
+      border-radius:20px;
+      overflow:hidden;
+      animation:fadeUp 0.8s 0.4s ease both;
+    }
+
+    .cert-card::before {
+      content:'';
+      position:absolute;top:0;left:0;right:0;height:3px;
+      background:linear-gradient(90deg, var(--olive), var(--gold), var(--olive));
+    }
+
+    .cert-inner {
+      display:grid;grid-template-columns:1fr 1fr;
+      gap:0;
+    }
+
+    /* Left — visual cert */
+    .cert-visual {
+      background:linear-gradient(135deg, #6B7B4A 0%, #8A9B5E 50%, #7A8C5A 100%);
+      padding:52px 40px;
+      display:flex;flex-direction:column;
+      align-items:center;justify-content:center;
+      text-align:center;
+      position:relative;
+      overflow:hidden;
+    }
+    .cert-visual::before {
+      content:'';
+      position:absolute;inset:0;
+      background:repeating-linear-gradient(
+        45deg,
+        transparent,transparent 20px,
+        rgba(255,255,255,0.03) 20px,rgba(255,255,255,0.03) 21px
+      );
+    }
+    .cert-checkmark {
+      width:60px;height:60px;border-radius:50%;
+      border:2px solid rgba(255,255,255,0.6);
+      display:flex;align-items:center;justify-content:center;
+      font-size:26px;margin-bottom:24px;
+      background:rgba(255,255,255,0.1);
+      backdrop-filter:blur(4px);
+      position:relative;z-index:1;
+    }
+    .cert-label {
+      font-family:'DM Mono',monospace;font-size:10px;
+      letter-spacing:0.2em;color:rgba(255,255,255,0.7);
+      margin-bottom:16px;position:relative;z-index:1;
+    }
+    .cert-name {
+      font-family:'Playfair Display',serif;
+      font-size:28px;font-weight:700;
+      color:#fff;line-height:1.2;margin-bottom:8px;
+      position:relative;z-index:1;
+    }
+    .cert-completed { font-size:13px;color:rgba(255,255,255,0.65);margin-bottom:20px;position:relative;z-index:1; }
+    .cert-course-title {
+      font-family:'Playfair Display',serif;
+      font-size:22px;font-weight:700;color:#fff;
+      position:relative;z-index:1;line-height:1.3;
+    }
+    .cert-issuer {
+      margin-top:24px;font-family:'DM Mono',monospace;
+      font-size:13px;font-weight:500;letter-spacing:0.15em;
+      color:rgba(255,255,255,0.8);position:relative;z-index:1;
+    }
+
+    /* Right — details */
+    .cert-details { padding:40px 40px; }
+    .cert-details h2 {
+      font-family:'Playfair Display',serif;
+      font-size:26px;font-weight:700;margin-bottom:6px;
+    }
+    .cert-details p { font-size:14px;color:var(--muted);line-height:1.7;margin-bottom:24px; }
+
+    .cert-meta { display:flex;flex-direction:column;gap:14px;margin-bottom:28px; }
+    .meta-row {
+      display:flex;align-items:center;gap:12px;
+      padding:12px 16px;background:var(--faint);
+      border-radius:8px;border:1px solid var(--border);
+    }
+    .meta-icon { font-size:16px;width:24px;text-align:center;flex-shrink:0; }
+    .meta-label { font-size:10px;color:var(--muted);letter-spacing:0.08em;margin-bottom:2px; }
+    .meta-value { font-size:13px;color:var(--text);font-weight:500;font-family:'DM Mono',monospace; }
+
+    .verify-link {
+      display:inline-flex;align-items:center;gap:8px;
+      padding:10px 20px;border-radius:8px;
+      border:1px solid var(--olive);color:var(--olive-lt);
+      font-size:13px;text-decoration:none;font-family:'DM Mono',monospace;
+      transition:all 0.2s;background:var(--olive-glow);
+    }
+    .verify-link:hover { background:var(--olive);color:#0A0E17;font-weight:600; }
+
+    /* ── SKILLS ── */
+    .skills-section { padding:0 0 80px; }
+    .section-label {
+      font-family:'DM Mono',monospace;font-size:11px;
+      color:var(--muted);letter-spacing:0.15em;
+      margin-bottom:24px;display:flex;align-items:center;gap:12px;
+    }
+    .section-label::after {
+      content:'';flex:1;height:1px;background:var(--border);
+    }
+    .skills-grid { display:grid;grid-template-columns:repeat(3,1fr);gap:12px; }
+    .skill-card {
+      background:var(--surface);border:1px solid var(--border);
+      border-radius:12px;padding:20px;
+      transition:border-color 0.2s,transform 0.2s;
+      animation:fadeUp 0.6s ease both;
+    }
+    .skill-card:hover { border-color:var(--olive);transform:translateY(-3px); }
+    .skill-icon { font-size:24px;margin-bottom:10px; }
+    .skill-name { font-size:14px;font-weight:600;color:var(--text);margin-bottom:4px; }
+    .skill-desc { font-size:12px;color:var(--muted);line-height:1.6; }
+
+    /* ── JOURNEY ── */
+    .journey-section { padding:0 0 80px; }
+    .timeline { display:flex;flex-direction:column;gap:0; }
+    .tl-item {
+      display:grid;grid-template-columns:80px 1fr;gap:20px;
+      padding:20px 0;border-left:1px solid var(--border);
+      margin-left:40px;padding-left:24px;position:relative;
+      animation:fadeUp 0.6s ease both;
+    }
+    .tl-item::before {
+      content:'';position:absolute;
+      left:-5px;top:28px;
+      width:9px;height:9px;border-radius:50%;
+      background:var(--olive);
+      box-shadow:0 0 12px var(--olive);
+    }
+    .tl-item.done::before { background:var(--gold); box-shadow:0 0 12px var(--gold); }
+    .tl-day {
+      font-family:'DM Mono',monospace;font-size:11px;
+      color:var(--muted);padding-top:6px;letter-spacing:0.05em;
+    }
+    .tl-content { }
+    .tl-title { font-size:15px;font-weight:600;color:var(--text);margin-bottom:4px; }
+    .tl-desc { font-size:13px;color:var(--muted);line-height:1.6; }
+    .tl-tag {
+      display:inline-block;margin-top:8px;
+      font-size:10px;padding:3px 10px;border-radius:100px;
+      font-family:'DM Mono',monospace;letter-spacing:0.06em;
+    }
+    .tl-tag.done { background:var(--olive-glow);color:var(--olive-lt);border:1px solid var(--olive); }
+    .tl-tag.active { background:#1B4FFF20;color:#6B8FFF;border:1px solid #1B4FFF44; }
+    .tl-tag.upcoming { background:var(--faint);color:var(--muted);border:1px solid var(--border); }
+
+    /* ── CTA ── */
+    .cta-section {
+      padding:60px 0 100px;text-align:center;
+    }
+    .cta-box {
+      background:var(--surface);border:1px solid var(--border);
+      border-radius:20px;padding:52px 40px;position:relative;overflow:hidden;
+    }
+    .cta-box::before {
+      content:'';position:absolute;inset:0;
+      background:radial-gradient(ellipse at 50% 0%, var(--olive-glow) 0%, transparent 70%);
+    }
+    .cta-box h2 {
+      font-family:'Playfair Display',serif;font-size:36px;font-weight:900;
+      margin-bottom:12px;position:relative;
+    }
+    .cta-box p { font-size:15px;color:var(--muted);margin-bottom:28px;position:relative; }
+    .cta-links { display:flex;gap:12px;justify-content:center;flex-wrap:wrap;position:relative; }
+
+    /* ── FOOTER ── */
+    footer {
+      border-top:1px solid var(--border);
+      padding:24px 0;text-align:center;
+      font-family:'DM Mono',monospace;font-size:12px;color:var(--muted);
+    }
+
+    /* ── ANIMATIONS ── */
+    @keyframes fadeUp {
+      from { opacity:0;transform:translateY(20px); }
+      to   { opacity:1;transform:none; }
+    }
+    @keyframes fadeDown {
+      from { opacity:0;transform:translateY(-10px); }
+      to   { opacity:1;transform:none; }
+    }
+    @keyframes pulse {
+      0%,100% { opacity:1;transform:scale(1); }
+      50%      { opacity:0.5;transform:scale(0.8); }
+    }
+
+    /* ── RESPONSIVE ── */
+    @media(max-width:700px) {
+      .cert-inner { grid-template-columns:1fr; }
+      .cert-visual { padding:40px 24px; }
+      .cert-details { padding:28px 24px; }
+      .skills-grid { grid-template-columns:1fr 1fr; }
+      .hero-title { font-size:42px; }
+      nav .nav-links { display:none; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav>
+    <div class="wrap">
+      <div class="nav-logo">RKJ / CERTIFIED</div>
+      <div class="nav-links">
+        <a href="#certificate">Certificate</a>
+        <a href="#skills">Skills</a>
+        <a href="#journey">Journey</a>
+        <a href="https://verify.skilljar.com/c/qjqomcznfvux" target="_blank">Verify ↗</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="wrap">
+      <div class="hero-badge">
+        <span></span> ANTHROPIC CERTIFIED · MARCH 2026
+      </div>
+      <h1 class="hero-title">
+        <em>Claude Code</em><br/>in Action
+      </h1>
+      <p class="hero-sub">
+        Earned by <strong>Ranjan Kumar Jena</strong> — an official certificate of completion
+        from Anthropic, the team behind Claude AI.
+      </p>
+      <div class="hero-actions">
+        <a href="https://verify.skilljar.com/c/qjqomcznfvux" target="_blank" class="btn-primary">
+          ✓ Verify Certificate
+        </a>
+        <a href="#journey" class="btn-ghost">
+          View Journey →
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- CERTIFICATE CARD -->
+  <section class="cert-section" id="certificate">
+    <div class="wrap">
+      <div class="cert-card">
+        <div class="cert-inner">
+
+          <!-- Visual replica -->
+          <div class="cert-visual">
+            <div class="cert-checkmark">✓</div>
+            <div class="cert-label">CERTIFICATE OF COMPLETION</div>
+            <div class="cert-name">Ranjan Kumar Jena</div>
+            <div class="cert-completed">has completed</div>
+            <div class="cert-course-title">Claude Code in Action</div>
+            <div class="cert-issuer">ANTHROP\C</div>
+          </div>
+
+          <!-- Details -->
+          <div class="cert-details">
+            <h2>Official Credential</h2>
+            <p>Issued by Anthropic — creators of Claude AI. This certificate validates hands-on proficiency with Claude Code and applied AI development.</p>
+
+            <div class="cert-meta">
+              <div class="meta-row">
+                <div class="meta-icon">👤</div>
+                <div>
+                  <div class="meta-label">ISSUED TO</div>
+                  <div class="meta-value">Ranjan Kumar Jena</div>
+                </div>
+              </div>
+              <div class="meta-row">
+                <div class="meta-icon">📅</div>
+                <div>
+                  <div class="meta-label">ISSUE DATE</div>
+                  <div class="meta-value">March 2, 2026</div>
+                </div>
+              </div>
+              <div class="meta-row">
+                <div class="meta-icon">🔑</div>
+                <div>
+                  <div class="meta-label">CERTIFICATE NO</div>
+                  <div class="meta-value">qjqomcznfvux</div>
+                </div>
+              </div>
+              <div class="meta-row">
+                <div class="meta-icon">🏛️</div>
+                <div>
+                  <div class="meta-label">ISSUING BODY</div>
+                  <div class="meta-value">Anthropic · anthropic.com</div>
+                </div>
+              </div>
+            </div>
+
+            <a href="https://verify.skilljar.com/c/qjqomcznfvux" target="_blank" class="verify-link">
+              🔗 verify.skilljar.com/c/qjqomcznfvux
+            </a>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SKILLS -->
+  <section class="skills-section" id="skills">
+    <div class="wrap">
+      <div class="section-label">SKILLS VALIDATED</div>
+      <div class="skills-grid">
+        <div class="skill-card" style="animation-delay:0.05s">
+          <div class="skill-icon">🤖</div>
+          <div class="skill-name">Claude API Integration</div>
+          <div class="skill-desc">Building real applications powered by Claude AI with prompt engineering and API calls.</div>
+        </div>
+        <div class="skill-card" style="animation-delay:0.1s">
+          <div class="skill-icon">⚡</div>
+          <div class="skill-name">Agentic Coding</div>
+          <div class="skill-desc">Using Claude Code to accelerate development — plan, build, debug, and ship faster.</div>
+        </div>
+        <div class="skill-card" style="animation-delay:0.15s">
+          <div class="skill-icon">🧠</div>
+          <div class="skill-name">Prompt Engineering</div>
+          <div class="skill-desc">Crafting precise, effective prompts that produce professional, reliable outputs.</div>
+        </div>
+        <div class="skill-card" style="animation-delay:0.2s">
+          <div class="skill-icon">🔧</div>
+          <div class="skill-name">Full-Stack AI Apps</div>
+          <div class="skill-desc">Connecting AI backends (FastAPI, Python) to frontend interfaces with real users.</div>
+        </div>
+        <div class="skill-card" style="animation-delay:0.25s">
+          <div class="skill-icon">🔄</div>
+          <div class="skill-name">n8n Automation</div>
+          <div class="skill-desc">Building intelligent workflows that combine Claude AI with external tools and APIs.</div>
+        </div>
+        <div class="skill-card" style="animation-delay:0.3s">
+          <div class="skill-icon">🚀</div>
+          <div class="skill-name">Deployment & DevOps</div>
+          <div class="skill-desc">Shipping projects to Vercel, Railway, and GitHub with proper READMEs and CI.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- JOURNEY -->
+  <section class="journey-section" id="journey">
+    <div class="wrap">
+      <div class="section-label">75-DAY AI VIBE CODER JOURNEY</div>
+      <div class="timeline">
+
+        <div class="tl-item done" style="animation-delay:0.05s">
+          <div class="tl-day">DAY 1</div>
+          <div class="tl-content">
+            <div class="tl-title">Claude Mastery & Prompt Engineering</div>
+            <div class="tl-desc">Completed Anthropic AI Fluency course. Wrote 20+ prompts. Built first BrewMind coffee shop webpage.</div>
+            <span class="tl-tag done">✓ Complete</span>
+          </div>
+        </div>
+
+        <div class="tl-item done" style="animation-delay:0.1s">
+          <div class="tl-day">DAY 2</div>
+          <div class="tl-content">
+            <div class="tl-title">Prompt Engineering Deep Dive</div>
+            <div class="tl-desc">Mastered 5 core prompt techniques. Built and deployed personal bio webpage to Vercel. Pushed first GitHub repo.</div>
+            <span class="tl-tag done">✓ Complete</span>
+          </div>
+        </div>
+
+        <div class="tl-item done" style="animation-delay:0.15s">
+          <div class="tl-day">DAY 6</div>
+          <div class="tl-content">
+            <div class="tl-title">Anthropic Certificate — Claude Code in Action</div>
+            <div class="tl-desc">Earned official certification from Anthropic. Validated hands-on proficiency with Claude Code and AI-assisted development.</div>
+            <span class="tl-tag done">✓ Certified</span>
+          </div>
+        </div>
+
+        <div class="tl-item active" style="animation-delay:0.2s">
+          <div class="tl-day">DAYS 7–14</div>
+          <div class="tl-content">
+            <div class="tl-title">Google AI Essentials + n8n Automation</div>
+            <div class="tl-desc">Completing Google AI Essentials certificate. Building first AI automation workflows with n8n and Claude API.</div>
+            <span class="tl-tag active">● In Progress</span>
+          </div>
+        </div>
+
+        <div class="tl-item" style="animation-delay:0.25s">
+          <div class="tl-day">DAYS 15–30</div>
+          <div class="tl-content">
+            <div class="tl-title">Python Deep Dive + Full-Stack Projects</div>
+            <div class="tl-desc">FastAPI backend development. Supabase database integration. First full-stack AI application deployed.</div>
+            <span class="tl-tag upcoming">Upcoming</span>
+          </div>
+        </div>
+
+        <div class="tl-item" style="animation-delay:0.3s">
+          <div class="tl-day">DAYS 31–55</div>
+          <div class="tl-content">
+            <div class="tl-title">Portfolio Projects + Interview Prep</div>
+            <div class="tl-desc">VidyaAI (K-12 AI Tutor) · SaaS Dashboard · Business Automation Tool · Personal brand launch.</div>
+            <span class="tl-tag upcoming">Upcoming</span>
+          </div>
+        </div>
+
+        <div class="tl-item" style="animation-delay:0.35s">
+          <div class="tl-day">DAYS 56–75</div>
+          <div class="tl-content">
+            <div class="tl-title">Job Hunt + Freelance Launch</div>
+            <div class="tl-desc">Target: 10 LPA+ India role OR ₹50k/month freelance pipeline OR remote role secured.</div>
+            <span class="tl-tag upcoming">Target: Day 75</span>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="cta-section">
+    <div class="wrap">
+      <div class="cta-box">
+        <h2>Let's Connect</h2>
+        <p>Following this journey? Building something similar? I'd love to connect.</p>
+        <div class="cta-links">
+          <a href="https://linkedin.com/in/YOUR-LINKEDIN" target="_blank" class="btn-primary">LinkedIn →</a>
+          <a href="https://github.com/YOUR-GITHUB" target="_blank" class="btn-ghost">GitHub →</a>
+          <a href="https://verify.skilljar.com/c/qjqomcznfvux" target="_blank" class="btn-ghost">Verify Certificate →</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="wrap">
+      Ranjan Kumar Jena · Anthropic Certified · Claude Code in Action · Certificate No: qjqomcznfvux
+    </div>
+  </footer>
+
+</body>
+</html>
